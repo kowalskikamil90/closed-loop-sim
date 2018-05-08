@@ -64,9 +64,9 @@ class ControlSystem():
         self.__controller.setI(float(self.__PIDentries[labs[1]].get()))
         self.__controller.setD(float(self.__PIDentries[labs[2]].get()))
 
-        result = self.calculateResultList()
+        resultVec = self.calculateResultList()
 
-        self.__viewRef.updatePlot(result)
+        self.__viewRef.updatePlot(resultVec)
 
     def calculateResultList(self):
 
@@ -105,7 +105,7 @@ class ControlSystem():
         for t in samplingListFloat:
             result.append(calculateValueForSpecificTime(t, omega0, dzeta))
 
-        return result
+        return [samplingListFloat, result]
 
 
     def getController(self):

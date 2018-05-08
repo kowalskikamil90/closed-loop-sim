@@ -1,5 +1,18 @@
 import tkinter as tk
 
+import matplotlib
+matplotlib.use('TkAgg')
+
+
+from numpy import arange, sin, pi
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
+# implement the default mpl key bindings
+from matplotlib.backend_bases import key_press_handler
+
+from matplotlib.figure import Figure
+
+import sys
+
 class layoutManager():
     # Height of all frame widgets
     controlFrameH = 200
@@ -29,6 +42,8 @@ class layoutManager():
         self.__PIDentries = {}
         self.__OBJentries = {}
         self.__plotFrame = None
+        self.__plot = None
+        self.__plotCanvas = None
 
     def createWindow(self):
         # Create master widget, the window.
@@ -239,10 +254,20 @@ class layoutManager():
         self.__plotFrame.place(x=layoutManager.leftMargin,
                                y=layoutManager.plotFrameYCord)
 
+        # Embeeding plot from matplotlib into tk canvas widget
+        figure = Figure(figsize=(7.9, 2.9), dpi=100)
+        self.__plot = figure.add_subplot(111)
+        self.__plotCanvas = FigureCanvasTkAgg(figure , master=self.__master)
+        self.__plotCanvas.draw()
+        self.__plotCanvas._tkcanvas.place(x=layoutManager.leftMargin + 5,
+                                          y=layoutManager.plotFrameYCord + 5)
+
+
     def updatePlot(self, result):
-        # TODO: implement when plotting is ready
-        print(result)
-        pass
+
+        self.__plot.plot(result[0], result[1])
+        self.__plotCanvas.draw()
+
 
     def master(self):
         return self.__master
