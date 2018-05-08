@@ -42,7 +42,6 @@ class layoutManager():
         self.__master.resizable(0, 0)
 
     def createControlFrame(self):
-
         # This frame is used for holding
         # control widgets
         controlFrame = tk.Frame(self.__master,
@@ -123,22 +122,111 @@ class layoutManager():
         # This frame is used for holding
         # scheme widgets
         schemeFrame = tk.Frame(self.__master,
-                               borderwidth=3,
+                               borderwidth=2,
                                width=layoutManager.frameWidth,
                                height=layoutManager.schemeFrameH,
                                relief="solid",
-                               bg="#63D84C")
+                               bg="#AE4D1D")
         schemeFrame.place(x=layoutManager.leftMargin,
                           y=layoutManager.schemeFrameYCord)
 
         canvas_width = layoutManager.frameWidth - 20
         canvas_height = layoutManager.schemeFrameH - 20
+
         paintingArea = tk.Canvas(schemeFrame,
                                  width=canvas_width,
                                  height=canvas_height,
-                                 bg="#476042")
-        paintingArea.place(x=5,
-                           y=5)
+                                 bg="#C49B86")
+
+        self.paintTheScheme(paintingArea, canvas_width, canvas_height)
+
+    def paintTheScheme(self, canvas, w, h):
+
+        canvas.place(x=5,
+                     y=5)
+
+        # Paint feedback line and connections
+        canvas.create_line(80,
+                           80,
+                           w - 80,
+                           80,
+                           fill="black",
+                           width=3)
+        canvas.create_line(w - 80,
+                           80,
+                           w - 80,
+                           h - 80,
+                           fill="black",
+                           width=3)
+        canvas.create_line(w - 80,
+                           80,
+                           w - 80,
+                           h - 80,
+                           fill="black",
+                           width=3)
+        canvas.create_line(w - 80,
+                           h - 80,
+                           80,
+                           h - 80,
+                           fill="black",
+                           width=3)
+        canvas.create_line(80,
+                           h - 80,
+                           80,
+                           h - 170,
+                           fill="black",
+                           width=3)
+        canvas.create_line(80,
+                           h - 170,
+                           180,
+                           h - 170,
+                           fill="black",
+                           width=3)
+
+        # Paint summator
+        canvas.create_rectangle(170,
+                                h - 210,
+                                170 + 50,
+                                h - 160,
+                                fill="red")
+        canvas.create_line(180,
+                           h - 200,
+                           190,
+                           h - 200,
+                           fill="black",
+                           width=3)
+        canvas.create_line(185,
+                           h - 195,
+                           185,
+                           h - 205,
+                           fill="black",
+                           width=3)
+        canvas.create_line(180,
+                           h - 170,
+                           190,
+                           h - 170,
+                           fill="black",
+                           width=3)
+
+        # Paint the PID Controller
+        canvas.create_rectangle(330,
+                                h - 225,
+                                330 + 50,
+                                h - 175,
+                                fill="yellow")
+        canvas.create_text(355,
+                           h-200,
+                           text="PID")
+
+        # Paint the Object which is te subject of control system
+        canvas.create_rectangle(500,
+                                h - 225,
+                                500 + 50,
+                                h - 175,
+                                fill="orange")
+        canvas.create_text(525,
+                           h-200,
+                           text="OBJECT")
 
     def createPlotFrame(self):
         # This frame is used for holding
