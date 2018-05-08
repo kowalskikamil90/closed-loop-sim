@@ -28,6 +28,7 @@ class layoutManager():
         self.__simButton = None
         self.__PIDentries = {}
         self.__OBJentries = {}
+        self.__plotFrame = None
 
     def createWindow(self):
         # Create master widget, the window.
@@ -52,15 +53,15 @@ class layoutManager():
         controlFrame.place(x=layoutManager.leftMargin,
                            y=layoutManager.controlFrameYCord)
 
-        simButton = tk.Button(controlFrame,
-                              text="SIMULATE",
-                              fg="black",
-                              bg="#63D84C",
-                              width=24,
-                              height=8,
-                              command=quit)
-        simButton.place(x=layoutManager.leftMargin + 500,
-                        y=layoutManager.controlFrameYCord + 20)
+        self.__simButton = tk.Button(controlFrame,
+                                text="SIMULATE",
+                                fg="black",
+                                bg="#63D84C",
+                                width=24,
+                                height=8,
+                                command=quit)
+        self.__simButton.place(x=layoutManager.leftMargin + 500,
+                          y=layoutManager.controlFrameYCord + 20)
 
         # PID parameters panel
         pidLab = tk.Label(controlFrame,
@@ -231,19 +232,29 @@ class layoutManager():
     def createPlotFrame(self):
         # This frame is used for holding
         # plot widgets
-        plotFrame = tk.Frame(self.__master,
-                             borderwidth=3,
-                             width=layoutManager.frameWidth,
-                             height=layoutManager.plotFrameH,
-                             relief="groove")
-        plotFrame.place(x=layoutManager.leftMargin,
-                        y=layoutManager.plotFrameYCord)
+        self.__plotFrame = tk.Frame(self.__master,
+                                    borderwidth=3,
+                                    width=layoutManager.frameWidth,
+                                    height=layoutManager.plotFrameH,
+                                    relief="groove")
+        self.__plotFrame.place(x=layoutManager.leftMargin,
+                               y=layoutManager.plotFrameYCord)
+
+    def updatePlot(self, result):
+        # TODO: implement when plotting is ready
+        pass
 
     def master(self):
         return self.__master
+
+    def simButton(self):
+        return self.__simButton
 
     def PIDentries(self):
         return self.__PIDentries
 
     def OBJentries(self):
         return self.__OBJentries
+
+    def plotFrameReference(self):
+        return self.__plotFrame
