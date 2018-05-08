@@ -1,3 +1,5 @@
+from math import *
+
 class PIDcontroller():
 
     def __init__(self):
@@ -51,11 +53,60 @@ class ControlSystem():
         self.__OBJentries = objEntries
 
     def generateResponse(self):
-        print("GENERATE RESPONSE") #temporary, to check the callback execution
-        # TODO: this is where the response will be calculated based
-        # TODO: on known equation
-        result = []
+        # Fetch object parameters from the entry forms
+        labs = ["Angular frequency(Wo):", "Damping ratio(dzeta):"]
+        self.__object.setOmega0(float(self.__OBJentries[labs[0]].get()))
+        self.__object.setDampingRatio(float(self.__OBJentries[labs[1]].get()))
+
+        # Fetch PID parameters from the entry forms
+        labs = ["Proportional:", "Integrative:", "Derivative:"]
+        self.__controller.setP(float(self.__PIDentries[labs[0]].get()))
+        self.__controller.setI(float(self.__PIDentries[labs[1]].get()))
+        self.__controller.setD(float(self.__PIDentries[labs[2]].get()))
+
+        result = self.calculateResultList()
+
         self.__viewRef.updatePlot(result)
+
+    def calculateResultList(self):
+
+        # Object parameters
+        omega0 = self.__object.getOmega0()
+        dzeta = self.__object.getDampingRatio()
+
+        # PID controller parameteres
+        P = self.__controller.getP()
+        I = self.__controller.getI()
+        D = self.__controller.getD()
+
+        # Sampling interval and lists
+        sampling = 50 #50 ms
+        simulationTime = 10000 #10 seconds
+        samplingList = range(0, simulationTime + sampling, sampling)
+        samplingListFloat = [x * 0.001 for x in samplingList]
+
+        # This should be equation for closed-loop control system but
+        # it is only second-order oscilator object alone..
+        # Couldn't find the exact equation for the closed-loop system :)
+        # It basically means that the PID parameters don't matter and
+        # they doesn't influence the response.
+
+        def calculateValueForSpecificTime(t, w0, dz):
+            el1 = 1.0/(sqrt(1-pow(dz, 2)))
+            el2 = exp(-1.0*dz*w0*t)
+            intermediateVal1 = sqrt(1.0-pow(dz, 2))*w0*t
+            intermediateVal2 = acos(dz)
+            el3 = sin(intermediateVal1 + intermediateVal2)
+            return 1 - el1*el2*el3
+
+        # Prepare empty list for result
+        result = []
+
+        for t in samplingListFloat:
+            result.append(calculateValueForSpecificTime(t, omega0, dzeta))
+
+        return result
+
 
     def getController(self):
         return self.__controller

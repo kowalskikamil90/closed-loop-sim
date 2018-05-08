@@ -58,8 +58,7 @@ class layoutManager():
                                 fg="black",
                                 bg="#63D84C",
                                 width=24,
-                                height=8,
-                                command=quit)
+                                height=8)
         self.__simButton.place(x=layoutManager.leftMargin + 500,
                           y=layoutManager.controlFrameYCord + 20)
 
@@ -116,8 +115,8 @@ class layoutManager():
             self.__OBJentries[lab] = entry
 
         # Set default values
-        self.__OBJentries[labs[0]].insert(0, string=str(1.0))
-        self.__OBJentries[labs[1]].insert(0, string=str(0.5))
+        self.__OBJentries[labs[0]].insert(0, string=str(3.0))
+        self.__OBJentries[labs[1]].insert(0, string=str(0.25))
 
     def createSchemeFrame(self):
         # This frame is used for holding
@@ -242,6 +241,7 @@ class layoutManager():
 
     def updatePlot(self, result):
         # TODO: implement when plotting is ready
+        print(result)
         pass
 
     def master(self):
