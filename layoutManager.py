@@ -25,6 +25,9 @@ class layoutManager():
 
     def __init__(self):
         self.__master = None
+        self.__simButton = None
+        self.__PIDentries = {}
+        self.__OBJentries = {}
 
     def createWindow(self):
         # Create master widget, the window.
@@ -57,13 +60,64 @@ class layoutManager():
                               width=24,
                               height=8,
                               command=quit)
-        simButton.place(x=layoutManager.leftMargin + 200,
+        simButton.place(x=layoutManager.leftMargin + 500,
                         y=layoutManager.controlFrameYCord + 20)
 
+        # PID parameters panel
         pidLab = tk.Label(controlFrame,
-                          text="PID parameters:")
+                          text="PID parameters:",
+                          font=("Arial", 13))
         pidLab.place(x=layoutManager.leftMargin + 20,
                      y=layoutManager.controlFrameYCord + 20)
+
+        labs = ["Proportional:", "Integrative:", "Derivative:"]
+        bias = 0;
+        entryLength = 80
+
+        for lab in labs:
+            label = tk.Label(controlFrame,
+                             text=lab,
+                             font=("Arial", 10))
+            label.place(x=layoutManager.leftMargin + 20,
+                        y=layoutManager.controlFrameYCord + 45 + bias)
+            entry = tk.Entry(controlFrame, justify='center')
+            entry.place(x=layoutManager.leftMargin + 100,
+                        y=layoutManager.controlFrameYCord + 45 + bias,
+                        width=entryLength)
+            bias += 25
+            self.__PIDentries[lab] = entry
+
+        # Set default values
+        self.__PIDentries[labs[0]].insert(0, string=str(1.0))
+        self.__PIDentries[labs[1]].insert(0, string=str(0.5))
+        self.__PIDentries[labs[2]].insert(0, string=str(0.2))
+
+        # Oscillatory object parameters panel
+        objLab = tk.Label(controlFrame,
+                          text="Oscillatory object parameters:",
+                          font=("Arial", 13))
+        objLab.place(x=layoutManager.leftMargin + 250,
+                     y=layoutManager.controlFrameYCord + 20)
+
+        labs = ["Angular frequency(Wo):", "Damping ratio(dzeta):"]
+        bias = 0;
+
+        for lab in labs:
+            label = tk.Label(controlFrame,
+                             text=lab,
+                             font=("Arial", 10))
+            label.place(x=layoutManager.leftMargin + 250,
+                        y=layoutManager.controlFrameYCord + 45 + bias)
+            entry = tk.Entry(controlFrame, justify='center')
+            entry.place(x=layoutManager.leftMargin + 390,
+                        y=layoutManager.controlFrameYCord + 45 + bias,
+                        width=entryLength)
+            bias += 25
+            self.__OBJentries[lab] = entry
+
+        # Set default values
+        self.__OBJentries[labs[0]].insert(0, string=str(1.0))
+        self.__OBJentries[labs[1]].insert(0, string=str(0.5))
 
     def createSchemeFrame(self):
         # This frame is used for holding
@@ -100,4 +154,8 @@ class layoutManager():
     def master(self):
         return self.__master
 
+    def PIDentries(self):
+        return self.__PIDentries
 
+    def OBJentries(self):
+        return self.__OBJentries
